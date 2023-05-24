@@ -66,7 +66,7 @@ async function runRetryCmd(inputs: Inputs): Promise<void> {
 }
 
 async function runCmd(attempt: number, inputs: Inputs, max_end_time: number) {
-  const end_time = Date.now() + getTimeout(inputs);
+  let end_time = Date.now() + getTimeout(inputs);
   if (end_time > max_end_time) {
     end_time = max_end_time;
   }
