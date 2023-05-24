@@ -8,6 +8,10 @@ Retries an Action step on failure or timeout. This is currently intended to repl
 
 ## Inputs
 
+### `max_timeout_minutes`
+
+**Optional** Minutes to wait before the step times out. Basically like official timeout-minutes but with this actions sigterm and cleanup rather than sigkill. Defaults to `350` as maximum is 6 hours for any job.
+
 ### `timeout_minutes`
 
 **Required** Minutes to wait before attempt times out. Must only specify either minutes or seconds
