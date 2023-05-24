@@ -1,5 +1,5 @@
-name: Retry Step
-description: 'Retry a step on failure or timeout'
+name: Retry Step Max Timeout
+description: 'Retry a step on failure or timeout with a maximum timeout of all retries'
 inputs:
   max_timeout_minutes:
     description: Minutes to wait before step times out. Basically like official timeout-minutes but with this actions sigterm and cleanup rather than sigkill.
