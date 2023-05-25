@@ -832,7 +832,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -906,7 +906,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -1002,14 +1002,21 @@ function runRetryCmd(inputs) {
         });
     });
 }
-function runCmd(attempt, inputs) {
+function runCmd(attempt, inputs, max_end_time) {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function () {
         var end_time, executable, timeout, child;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
+                    (0, core_1.info)("max_end_time inside inside, ".concat(max_end_time));
                     end_time = Date.now() + (0, inputs_1.getTimeout)(inputs);
+                    (0, core_1.info)("end_time, ".concat(end_time));
+                    if (end_time > max_end_time) {
+                        (0, core_1.info)("CHANGING ENDTIME TO MAXENDTIME");
+                        end_time = max_end_time;
+                    }
+                    (0, core_1.info)("end_time after, ".concat(end_time));
                     executable = getExecutable(inputs);
                     exit = 0;
                     done = false;
@@ -1069,12 +1076,16 @@ function runCmd(attempt, inputs) {
 }
 function runAction(inputs) {
     return __awaiter(this, void 0, void 0, function () {
-        var attempt, error_2;
+        var max_end_time, attempt, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, (0, inputs_1.validateInputs)(inputs)];
                 case 1:
                     _a.sent();
+                    (0, core_1.info)("now ".concat(Date.now()));
+                    (0, core_1.info)("convert max_timeout, ".concat(milliseconds_1.default.minutes(inputs.max_timeout_minutes)));
+                    max_end_time = Date.now() + milliseconds_1.default.minutes(inputs.max_timeout_minutes);
+                    (0, core_1.info)("max_end_time, ".concat(max_end_time));
                     attempt = 1;
                     _a.label = 2;
                 case 2:
@@ -1083,8 +1094,9 @@ function runAction(inputs) {
                 case 3:
                     _a.trys.push([3, 5, , 12]);
                     // just keep overwriting attempts output
+                    (0, core_1.info)("max_end_time inside, ".concat(max_end_time));
                     (0, core_1.setOutput)(OUTPUT_TOTAL_ATTEMPTS_KEY, attempt);
-                    return [4 /*yield*/, runCmd(attempt, inputs)];
+                    return [4 /*yield*/, runCmd(attempt, inputs, max_end_time)];
                 case 4:
                     _a.sent();
                     (0, core_1.info)("Command completed after ".concat(attempt, " attempt(s)."));
@@ -2852,7 +2864,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -2924,6 +2936,7 @@ function getTimeout(inputs) {
 }
 exports.getTimeout = getTimeout;
 function getInputs() {
+    var max_timeout_minutes = getInputNumber('max_timeout_minutes', false) || 350;
     var timeout_minutes = getInputNumber('timeout_minutes', false);
     var timeout_seconds = getInputNumber('timeout_seconds', false);
     var max_attempts = getInputNumber('max_attempts', true) || 3;
@@ -2938,6 +2951,7 @@ function getInputs() {
     var new_command_on_retry = (0, core_1.getInput)('new_command_on_retry');
     var retry_on_exit_code = getInputNumber('retry_on_exit_code', false);
     return {
+        max_timeout_minutes: max_timeout_minutes,
         timeout_minutes: timeout_minutes,
         timeout_seconds: timeout_seconds,
         max_attempts: max_attempts,
