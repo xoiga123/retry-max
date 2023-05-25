@@ -139,7 +139,6 @@ async function runAction(inputs: Inputs) {
   info("max_end_time", max_end_time);
   
   for (let attempt = 1; attempt <= inputs.max_attempts; attempt++) {
-    inputs.
     try {
       // just keep overwriting attempts output
       info("max_end_time inside", max_end_time);
