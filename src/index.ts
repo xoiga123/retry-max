@@ -66,10 +66,14 @@ async function runRetryCmd(inputs: Inputs): Promise<void> {
 }
 
 async function runCmd(attempt: number, inputs: Inputs, max_end_time: number) {
+  console.log("max_end_time inside inside", max_end_time);
   let end_time = Date.now() + getTimeout(inputs);
+  console.log("end_time", end_time);
   if (end_time > max_end_time) {
+    console.log("CHANGING ENDTIME TO MAXENDTIME");
     end_time = max_end_time;
   }
+  console.log("end_time after", end_time);
   const executable = getExecutable(inputs);
 
   exit = 0;
@@ -129,11 +133,16 @@ async function runCmd(attempt: number, inputs: Inputs, max_end_time: number) {
 
 async function runAction(inputs: Inputs) {
   await validateInputs(inputs);
+  console.log("now", Date.now());
+  console.log("convert max_timeout", ms.minutes(inputs.max_timeout_minutes));
   max_end_time = Date.now() + ms.minutes(inputs.max_timeout_minutes);
+  console.log("max_end_time", max_end_time);
+  
   for (let attempt = 1; attempt <= inputs.max_attempts; attempt++) {
     inputs.
     try {
       // just keep overwriting attempts output
+      console.log("max_end_time inside", max_end_time);
       setOutput(OUTPUT_TOTAL_ATTEMPTS_KEY, attempt);
       await runCmd(attempt, inputs, max_end_time);
       info(`Command completed after ${attempt} attempt(s).`);
