@@ -172,3 +172,27 @@ async function runAction(inputs: Inputs) {
 }
 
 const inputs = getInputs();
+
+runAction(inputs)
+  .then(() => {
+    setOutput(OUTPUT_EXIT_CODE_KEY, 0);
+    process.exit(0); // success
+  })
+  .catch((err) => {
+    // exact error code if available, otherwise just 1
+    const exitCode = exit > 0 ? exit : 1;
+
+    if (inputs.continue_on_error) {
+      warning(err.message);
+    } else {
+      error(err.message);
+    }
+
+    // these can be  helpful to know if continue-on-error is true
+    setOutput(OUTPUT_EXIT_ERROR_KEY, err.message);
+    setOutput(OUTPUT_EXIT_CODE_KEY, exitCode);
+
+    // if continue_on_error, exit with exact error code else exit gracefully
+    // mimics native continue-on-error that is not supported in composite actions
+    process.exit(inputs.continue_on_error ? 0 : exitCode);
+  });
