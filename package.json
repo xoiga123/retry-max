@@ -1,5 +1,5 @@
 {
-  "name": "retry",
+  "name": "retry-max",
   "version": "0.0.0-managed-by-semantic-release",
   "description": "Retries a GitHub Action step on failure or timeout.",
   "scripts": {
@@ -13,15 +13,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nick-invision/retry.git"
+    "url": "git+https://github.com/xoiga123/retry-max.git"
   },
   "keywords": [],
-  "author": "Nick Fields",
+  "author": "xoiga123",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nick-invision/retry/issues"
-  },
-  "homepage": "https://github.com/nick-invision/retry#readme",
   "dependencies": {
     "@actions/core": "^1.10.0",
     "milliseconds": "^1.0.3",
