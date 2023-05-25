@@ -135,7 +135,7 @@ async function runAction(inputs: Inputs) {
   await validateInputs(inputs);
   info("now", Date.now());
   info("convert max_timeout", ms.minutes(inputs.max_timeout_minutes));
-  max_end_time = Date.now() + ms.minutes(inputs.max_timeout_minutes);
+  let max_end_time = Date.now() + ms.minutes(inputs.max_timeout_minutes);
   info("max_end_time", max_end_time);
   
   for (let attempt = 1; attempt <= inputs.max_attempts; attempt++) {
