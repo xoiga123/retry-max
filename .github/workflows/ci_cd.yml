@@ -589,5 +589,5 @@ jobs:
       - name: Tag
         run: git tag -f v2 && git push -f origin v2
         env:
-          GITHUB_TOKEN: ${{ secrets.PUSH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MAJOR_VERSION: 2
