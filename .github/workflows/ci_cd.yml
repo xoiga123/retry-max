@@ -586,13 +586,8 @@ jobs:
           node-version: 16
       - name: Install dependencies
         run: npm ci
-      - name: Release
-        id: semantic
-        uses: cycjimmy/semantic-release-action@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Tag
-        run: git tag -f v${MAJOR_VERSION} && git push -f origin v${MAJOR_VERSION}
+        run: git tag -f v2 && git push -f origin v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MAJOR_VERSION: ${{ steps.semantic.outputs.new_release_major_version }}
+          MAJOR_VERSION: 2
