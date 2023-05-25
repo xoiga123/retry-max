@@ -2,7 +2,7 @@ import { getInput } from '@actions/core';
 import ms from 'milliseconds';
 
 export interface Inputs {
-  max_timeout_minutes: number | undefined;
+  max_timeout_minutes: number;
   timeout_minutes: number | undefined;
   timeout_seconds: number | undefined;
   max_attempts: number;
@@ -63,7 +63,7 @@ export function getTimeout(inputs: Inputs): number {
 }
 
 export function getInputs(): Inputs {
-  const max_timeout_minutes = getInputNumber('max_timeout_minutes', false) || 350
+  const max_timeout_minutes = getInputNumber('max_timeout_minutes', false) || 350;
   const timeout_minutes = getInputNumber('timeout_minutes', false);
   const timeout_seconds = getInputNumber('timeout_seconds', false);
   const max_attempts = getInputNumber('max_attempts', true) || 3;
